@@ -1,5 +1,8 @@
 # ImageCompression
 
+<img width="1260" height="802" alt="image" src="https://github.com/user-attachments/assets/85c7a818-95f8-4073-8449-2ffe37f69662" />
+
+
 WPF 기반의 Windows 이미지 압축 도구입니다.  
 ZIP/폴더/개별 이미지 입력을 지원하며, 다중 ZIP을 한 번에 넣어도 각 ZIP을 개별 출력으로 처리합니다.
 
@@ -14,6 +17,9 @@ ZIP/폴더/개별 이미지 입력을 지원하며, 다중 ZIP을 한 번에 넣
 - 프리셋 저장/적용, 최근 입력 경로
 - 한국어/영어 런타임 전환(설정 저장)
 - 진행률 표시(`n/total`) 및 실패 항목 필터
+
+<img width="606" height="952" alt="image" src="https://github.com/user-attachments/assets/fd91f39f-25bb-4e06-82f8-7f3520c28f37" />
+
 
 ## 기술 스택
 

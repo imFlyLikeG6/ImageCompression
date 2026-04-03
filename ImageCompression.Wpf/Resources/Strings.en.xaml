@@ -45,6 +45,7 @@
     <sys:String x:Key="Settings.Language">Language</sys:String>
     <sys:String x:Key="Settings.Language.Korean">Korean</sys:String>
     <sys:String x:Key="Settings.Language.English">English</sys:String>
+    <sys:String x:Key="Settings.BuildVersion">Build Version: {0}</sys:String>
     <sys:String x:Key="Settings.AutoQualityLevel.Label">Auto Quality Search</sys:String>
     <sys:String x:Key="Settings.AutoQualityLevel.Tooltip">Automatically searches quality to reduce size. If off, fixed JPEG/WebP quality values are used for faster processing.</sys:String>
     <sys:String x:Key="Settings.AutoQualityLevel.Off">Off (use fixed quality)</sys:String>

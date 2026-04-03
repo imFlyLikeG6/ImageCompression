@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using ImageCompression.Core;
@@ -50,6 +51,10 @@ public partial class ImageSettingsWindow : Window
         ConvertToJpegCheckBox.IsChecked = currentOptions.ConvertAllToJpeg;
         KeepOriginalWhenLargerCheckBox.IsChecked = currentOptions.KeepOriginalWhenLarger;
         UpdateControlStates();
+        BuildVersionTextBlock.Text = string.Format(
+            CultureInfo.CurrentUICulture,
+            LocalizationManager.GetString("Settings.BuildVersion"),
+            GetBuildVersionText());
     }
 
     private void ApplyButton_Click(object sender, RoutedEventArgs e)
@@ -197,5 +202,18 @@ public partial class ImageSettingsWindow : Window
                string.Equals(tag, "en", StringComparison.OrdinalIgnoreCase)
             ? "en"
             : "ko";
+    }
+
+    private static string GetBuildVersionText()
+    {
+        var assembly = typeof(ImageSettingsWindow).Assembly;
+        var informational = assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+        if (!string.IsNullOrWhiteSpace(informational))
+        {
+            return informational;
+        }
+
+        var version = assembly.GetName().Version;
+        return version is null ? "unknown" : version.ToString();
     }
 }

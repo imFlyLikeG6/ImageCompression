@@ -31,11 +31,31 @@ if (-not (Test-Path $dotnet)) {
     throw "dotnet 실행 파일을 찾을 수 없습니다: $dotnet"
 }
 
+function Get-ProjectVersion([string]$projectPath) {
+    try {
+        [xml]$projectXml = Get-Content -Path $projectPath -Raw -Encoding UTF8
+        $versionNode = $projectXml.Project.PropertyGroup.Version | Select-Object -First 1
+        if ($null -ne $versionNode) {
+            $versionText = $versionNode.InnerText
+            if (-not [string]::IsNullOrWhiteSpace($versionText)) {
+                return $versionText.Trim()
+            }
+        }
+    }
+    catch {
+        # fallback below
+    }
+
+    # 프로젝트 버전이 비어있으면 기본 버전을 사용합니다.
+    return "1.0.0"
+}
+
 # 배포 대상 프로젝트 및 출력 경로 계산
 # 중요: 스크립트를 어떤 현재 경로(CWD)에서 실행하든 동작하도록 절대 경로를 사용합니다.
 $project = Join-Path $PSScriptRoot "ImageCompression.Wpf/ImageCompression.Wpf.csproj"
 $publishRoot = Join-Path $PSScriptRoot "publish"
-$normalizedVersion = $Version.Trim()
+$effectiveVersion = if ([string]::IsNullOrWhiteSpace($Version)) { Get-ProjectVersion $project } else { $Version }
+$normalizedVersion = $effectiveVersion.Trim()
 if (-not [string]::IsNullOrWhiteSpace($normalizedVersion) -and
     $normalizedVersion.IndexOfAny([System.IO.Path]::GetInvalidFileNameChars()) -ge 0) {
     throw "Version에 파일명으로 사용할 수 없는 문자가 포함되어 있습니다: $normalizedVersion"

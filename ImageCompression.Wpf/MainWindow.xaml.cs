@@ -63,21 +63,27 @@ public partial class MainWindow : Window
     {
         // 생성자에서는 "초기 상태 복원 + UI 연결"만 수행하고,
         // 실제 무거운 작업(입력 스캔 등)은 사용자 액션 시점에 실행합니다.
-        InitializeComponent();
-        InputImagesDataGrid.ItemsSource = _inputImageItems;
-        LoadUserSettings();
-        LocalizationManager.SetLanguage(_languageCode);
-        _options.AutoQualityLevel = AutoQualityLevel.Off;
-        _options.EnableAutoFormatSelection = false;
-        ApplyUserSettingsToControls();
-        Loaded += MainWindow_Loaded;
-        Closed += MainWindow_Closed;
-        RefreshPresetCombo();
-        UpdateInputFilesSummary();
-        UpdateOutputPathPreview();
-        ResetCompressionProgress(0, 0);
-        EstimateSummaryTextBlock.Text = T("Ui.EstimateWait");
-        AppendLog(T("Log.Ready"));
+        _suspendSettingsPersistence = true;
+        try
+        {
+            InitializeComponent();
+            InputImagesDataGrid.ItemsSource = _inputImageItems;
+            LoadUserSettings();
+            LocalizationManager.SetLanguage(_languageCode);
+            ApplyUserSettingsToControls();
+            Loaded += MainWindow_Loaded;
+            Closed += MainWindow_Closed;
+            RefreshPresetCombo();
+            UpdateInputFilesSummary();
+            UpdateOutputPathPreview();
+            ResetCompressionProgress(0, 0);
+            EstimateSummaryTextBlock.Text = T("Ui.EstimateWait");
+            AppendLog(T("Log.Ready"));
+        }
+        finally
+        {
+            _suspendSettingsPersistence = false;
+        }
     }
 
     /// <summary>
@@ -336,11 +342,12 @@ public partial class MainWindow : Window
             LocalizationManager.SetLanguage(_languageCode);
             RefreshLocalizedRuntimeTexts();
         }
+        // 적용 직후 즉시 저장해, 이후 비동기 갱신 중 예외가 발생해도 설정 유실을 방지합니다.
+        SaveUserSettings();
         SyncQuickControlsFromOptions();
         AppendLog(T("Log.SettingsUpdated"));
         _ = RefreshPreviewForCurrentSelectionAsync();
         _ = RecalculateEstimateAsync();
-        SaveUserSettings();
     }
 
     /// <summary>
@@ -784,9 +791,10 @@ public partial class MainWindow : Window
                     preset.ConflictMode));
             }
         }
-        catch
+        catch (Exception ex)
         {
             // ignore corrupted setting file and continue with defaults
+            WriteSettingsError("load", ex);
         }
     }
 
@@ -845,6 +853,11 @@ public partial class MainWindow : Window
     /// </summary>
     private void SaveUserSettings()
     {
+        if (_suspendSettingsPersistence)
+        {
+            return;
+        }
+
         try
         {
             // 실패해도 앱 동작은 지속되도록 best-effort 저장 정책을 유지합니다.
@@ -869,9 +882,25 @@ public partial class MainWindow : Window
             var json = JsonSerializer.Serialize(settings, JsonOptions);
             File.WriteAllText(settingsPath, json);
         }
-        catch
+        catch (Exception ex)
         {
             // best effort persistence
+            WriteSettingsError("save", ex);
+        }
+    }
+
+    private static void WriteSettingsError(string stage, Exception ex)
+    {
+        try
+        {
+            var appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            var errorPath = Path.Combine(appData, "ImageCompression", "settings.error.log");
+            var line = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] {stage}: {ex.GetType().Name} | {ex.Message}{Environment.NewLine}";
+            File.AppendAllText(errorPath, line);
+        }
+        catch
+        {
+            // ignore secondary logging failure
         }
     }
 

@@ -45,6 +45,7 @@
     <sys:String x:Key="Settings.Language">언어</sys:String>
     <sys:String x:Key="Settings.Language.Korean">한국어</sys:String>
     <sys:String x:Key="Settings.Language.English">English</sys:String>
+    <sys:String x:Key="Settings.BuildVersion">빌드 버전: {0}</sys:String>
     <sys:String x:Key="Settings.AutoQualityLevel.Label">자동 품질 탐색</sys:String>
     <sys:String x:Key="Settings.AutoQualityLevel.Tooltip">품질을 자동 탐색해 용량을 줄입니다. 끄면 JPEG/WebP 고정 품질값을 사용해 더 빠르게 처리합니다.</sys:String>
     <sys:String x:Key="Settings.AutoQualityLevel.Off">끄기 (고정 품질 사용)</sys:String>

@@ -179,6 +179,11 @@
                         </ComboBox>
                     </Grid>
                 </GroupBox>
+
+                <TextBlock x:Name="BuildVersionTextBlock"
+                           Margin="4,10,4,0"
+                           HorizontalAlignment="Right"
+                           Foreground="{StaticResource SubtleTextBrush}" />
             </StackPanel>
         </ScrollViewer>
     </DockPanel>

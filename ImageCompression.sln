@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.34301.259
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageCompression.Core", "ImageCompression.Core\ImageCompression.Core.csproj", "{7B451A04-4798-409D-B396-1FEF47B1423D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageCompression.Wpf", "ImageCompression.Wpf\ImageCompression.Wpf.csproj", "{6678C41D-8967-488A-BAC0-8D708D3EEF69}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7B451A04-4798-409D-B396-1FEF47B1423D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B451A04-4798-409D-B396-1FEF47B1423D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B451A04-4798-409D-B396-1FEF47B1423D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B451A04-4798-409D-B396-1FEF47B1423D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6678C41D-8967-488A-BAC0-8D708D3EEF69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6678C41D-8967-488A-BAC0-8D708D3EEF69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6678C41D-8967-488A-BAC0-8D708D3EEF69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6678C41D-8967-488A-BAC0-8D708D3EEF69}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {61A08583-1697-494D-92C9-BE37A560DDB8}
+	EndGlobalSection
+EndGlobal
